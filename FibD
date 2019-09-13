@@ -1,0 +1,42 @@
+#!/bin/bash
+function FibD() {
+touch FibD.txt
+typeset -i line=`wc -l < FibD.txt`
+filename=FibD.txt
+declare -a temp
+temp[0]=0
+temp[1]=1
+echo "0" >> $filename
+echo "1" >> $filename
+n=$(($1+1))
+a=${temp[0]}
+b=${temp[1]}
+if [ $1 -eq 0 ]
+then
+        echo 0
+elif [ $1 -eq 1 ]
+then
+        echo 1
+elif [ $line -gt $1 ]
+then
+        sort -u -o $filename $filename
+        echo "1" >> $filename
+        sort -n -o $filename $filename
+        sed "${n}q;d" $filename
+else
+for(( i=2; i<$(($1+1)); i++))
+        do
+        temp[i]=$((a+b))
+        a=$b
+        b=${temp[i]}
+        echo "${temp[i]}" >> $filename
+done
+        sort -u -o $filename $filename
+        echo "1" >> $filename
+        sort -n -o $filename $filename
+sed "${n}q;d" $filename
+fi
+}
+FibD $1
+rm FibD.txt
+

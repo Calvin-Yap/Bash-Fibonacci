@@ -1,0 +1,16 @@
+#!/bin/bash
+typeset -i x=$1
+typeset -i y=$2
+echo -e "\t time in seconds"
+echo -e "n\t FibS(n)  FibD(n)"
+echo -e "-\t -------  -------"
+
+for((i=x; i<=y; i++))
+do
+(\time -f "%e" ./FibS $i)> tempFormat.txt 2>&1
+timeS=$(tail -n 1 tempFormat.txt)
+(\time -f "%e" ./FibD $i)> tempFormat.txt 2>&1
+timeD=$(tail -n 1 tempFormat.txt)
+rm tempFormat.txt
+echo -e "$i\t ${timeS}s\t  ${timeD}s"
+done
